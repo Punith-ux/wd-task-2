@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Task 2 - Contact Form & To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    form, .todo {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background: #eaeaea;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h2>Contact Form & To-Do List</h2>
+  <div class="container">
+    
+    <!-- Contact Form -->
+    <form id="contactForm">
+      <h3>Contact Form</h3>
+      <label>Name:</label>
+      <input type="text" id="name" placeholder="Enter your name">
+      
+      <label>Email:</label>
+      <input type="email" id="email" placeholder="Enter your email">
+      
+      <label>Message:</label>
+      <textarea id="message" placeholder="Your message..."></textarea>
+      
+      <p id="formError" class="error"></p>
+      <button type="submit">Submit</button>
+    </form>
+
+    <!-- To-Do List -->
+    <div class="todo">
+      <h3>To-Do List</h3>
+      <input type="text" id="taskInput" placeholder="Enter a task">
+      <button onclick="addTask()">Add Task</button>
+      <ul id="taskList"></ul>
+    </div>
+
+  </div>
+
+  <script>
+    // Form Validation
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let name = document.getElementById('name').value.trim();
+      let email = document.getElementById('email').value.trim();
+      let message = document.getElementById('message').value.trim();
+      let errorMsg = '';
+
+      if (!name || !email || !message) {
+        errorMsg = "All fields are required.";
+      } else if (!email.includes('@') || !email.includes('.')) {
+        errorMsg = "Enter a valid email.";
+      }
+
+      if (errorMsg) {
+        document.getElementById('formError').innerText = errorMsg;
+      } else {
+        document.getElementById('formError').innerText = "";
+        alert("Form submitted successfully!");
+        // Reset form
+        document.getElementById('contactForm').reset();
+      }
+    });
+
+    // To-Do List Logic
+    function addTask() {
+      let taskInput = document.getElementById('taskInput');
+      let taskText = taskInput.value.trim();
+      if (taskText === '') {
+        alert("Please enter a task!");
+        return;
+      }
+
+      let li = document.createElement('li');
+      li.innerHTML = `${taskText} <button onclick="this.parentElement.remove()">Delete</button>`;
+      document.getElementById('taskList').appendChild(li);
+      taskInput.value = '';
+    }
+  </script>
+
+</body>
+</html>
